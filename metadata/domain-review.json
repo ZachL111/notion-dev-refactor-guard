@@ -1,0 +1,73 @@
+{
+  "repo": "notion-dev-refactor-guard",
+  "language": "Rust",
+  "category": "Developer tools",
+  "goal": "Build a Rust toolkit that studies refactor behavior through layout fixtures, with stable geometry snapshots and bounded memory input sets.",
+  "review_model": {
+    "terms": [
+      "change width",
+      "diagnostic quality",
+      "review cost",
+      "safe rewrite"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "change width",
+      "signal": 40,
+      "slack": 29,
+      "drag": 15,
+      "confidence": 84,
+      "score": 148,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "diagnostic quality",
+      "signal": 78,
+      "slack": 24,
+      "drag": 12,
+      "confidence": 92,
+      "score": 236,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "review cost",
+      "signal": 65,
+      "slack": 33,
+      "drag": 19,
+      "confidence": 81,
+      "score": 187,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "safe rewrite",
+      "signal": 71,
+      "slack": 31,
+      "drag": 24,
+      "confidence": 79,
+      "score": 180,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "change width",
+      "signal": 54,
+      "slack": 33,
+      "drag": 12,
+      "confidence": 78,
+      "score": 183,
+      "lane": "ship"
+    }
+  ]
+}

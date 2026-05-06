@@ -1,69 +1,40 @@
 # notion-dev-refactor-guard
 
-`notion-dev-refactor-guard` explores developer tools in Rust. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
+`notion-dev-refactor-guard` is a compact Rust repository for developer tools, centered on this goal: Build a Rust toolkit that studies refactor behavior through layout fixtures, with stable geometry snapshots and bounded memory input sets.
 
-## Notion Dev Refactor Guard Notes
+## Why I Keep It Small
 
-The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Why This Exists
+## Notion Dev Refactor Guard Review Notes
 
-This project keeps the domain idea close to the tests. That makes it useful as a reference implementation, a small experiment, or a starting point for a more specialized tool.
+The first comparison I would make is `diagnostic quality` against `change width` because it shows where the rule is most opinionated.
 
-## Code Tour
+## Included Behavior
 
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `Cargo.toml`: Rust package metadata
+- `fixtures/domain_review.csv` adds cases for change width and diagnostic quality.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/notion-dev-refactor-walkthrough.md` walks through the case spread.
+- The Rust code includes a review path for `diagnostic quality` and `change width`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Feature Notes
+## Internal Model
 
-- Includes extended examples for safe defaults, including `surge` and `degraded`.
-- Documents repeatable output tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+The core code exposes a scoring path and the added review layer uses `signal`, `slack`, `drag`, and `confidence`. The domain terms are `change width`, `diagnostic quality`, `review cost`, and `safe rewrite`.
 
-## Implementation Notes
+The Rust implementation avoids hidden state so fixture changes are easy to reason about.
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps code shape, diagnostics, and safe defaults in one explicit decision path. The threshold is 166, with risk penalty 5, latency penalty 2, and weight bonus 6. The Rust code keeps ownership and data movement plain, which makes the tests useful for checking both behavior and API shape.
-
-## Local Setup
-
-The only required setup is the local Rust toolchain. After cloning, stay in the repo root so fixture paths resolve correctly.
-
-## Example Scenarios
-
-The examples are meant to be readable before they are exhaustive. They cover enough variation to show how latency and risk can pull a decision below the threshold.
-
-## Try It
+## Try It Locally
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Validation
 
-## Tests
+The verifier is intentionally local. It should fail if the fixture score math, lane assignment, or language-specific test drifts.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Scope
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Roadmap
-
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add one more developer tools fixture that focuses on a malformed or borderline input.
-
-## Boundaries
-
-The repository favors determinism over breadth. It does not pull live data, keep secrets, or depend on network access for verification.
+No external service is required. A deeper version would add more negative cases and a clearer boundary around invalid input.
